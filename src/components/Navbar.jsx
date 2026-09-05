@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ThemeToggle from './ThemeToggle';
 import './Navbar.css';
 
 const LINKS = [
@@ -35,6 +36,7 @@ function Navbar() {
         </nav>
 
         <div className="navbar__cta">
+          <ThemeToggle />
           <a href="#" className="navbar__signin">
             Sign In
           </a>
@@ -43,15 +45,18 @@ function Navbar() {
           </a>
         </div>
 
-        <button
-          className={`navbar__toggle ${open ? 'is-open' : ''}`}
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle menu"
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        <div className="navbar__mobile-controls">
+          <ThemeToggle />
+          <button
+            className={`navbar__toggle ${open ? 'is-open' : ''}`}
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </div>
 
       {open && (

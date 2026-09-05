@@ -2,13 +2,13 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--cream);
+  background: var(--bg);
   border-bottom: 3px solid transparent;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .navbar--scrolled {
-  border-bottom-color: var(--ink);
+  border-bottom-color: var(--line);
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
 }
 
@@ -27,7 +27,7 @@
   font-family: var(--font-display);
   font-size: 1.5rem;
   letter-spacing: 0.03em;
-  color: var(--ink);
+  color: var(--text);
   text-decoration: none;
   flex-shrink: 0;
 }
@@ -50,7 +50,7 @@
 
 .navbar__links a {
   text-decoration: none;
-  color: var(--ink);
+  color: var(--text);
   position: relative;
   padding-bottom: 4px;
 }
@@ -70,7 +70,7 @@
   text-decoration: none;
   font-family: var(--font-label);
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .navbar__btn {
@@ -78,8 +78,14 @@
   font-size: 0.85rem;
 }
 
-.navbar__toggle {
+.navbar__mobile-controls {
   display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar__toggle {
+  display: flex;
   flex-direction: column;
   gap: 5px;
   background: none;
@@ -91,7 +97,7 @@
 .navbar__toggle span {
   width: 24px;
   height: 3px;
-  background: var(--ink);
+  background: var(--text);
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -105,7 +111,7 @@
     display: none;
   }
 
-  .navbar__toggle {
+  .navbar__mobile-controls {
     display: flex;
   }
 
@@ -114,8 +120,8 @@
     flex-direction: column;
     gap: 4px;
     padding: 16px 24px 24px;
-    border-top: 3px solid var(--ink);
-    background: var(--cream);
+    border-top: 3px solid var(--line);
+    background: var(--bg);
     font-family: var(--font-label);
     font-weight: 600;
     font-size: 1.1rem;
@@ -123,9 +129,9 @@
 
   .navbar__mobile a {
     text-decoration: none;
-    color: var(--ink);
+    color: var(--text);
     padding: 12px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
   }
 
   .navbar__mobile .btn {

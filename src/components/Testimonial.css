@@ -1,5 +1,5 @@
 .testimonial {
-  background: var(--cream);
+  background: var(--bg);
 }
 
 .testimonial__inner {
@@ -20,7 +20,7 @@
   font-family: var(--font-display);
   font-size: clamp(1.4rem, 3vw, 2rem);
   line-height: 1.35;
-  color: var(--ink);
+  color: var(--text);
   margin: 0 0 32px;
 }
 
@@ -36,7 +36,7 @@
   height: 48px;
   border-radius: 50%;
   background: var(--navy);
-  border: 2px solid var(--ink);
+  border: 2px solid var(--line);
 }
 
 .testimonial__name {
@@ -47,5 +47,5 @@
 
 .testimonial__role {
   font-size: 0.9rem;
-  color: var(--navy-dark);
+  color: var(--text-muted);
 }

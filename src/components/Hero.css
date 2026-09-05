@@ -1,5 +1,5 @@
 .hero {
-  background: var(--cream);
+  background: var(--bg);
   overflow: hidden;
 }
 
@@ -21,13 +21,13 @@
   font-size: clamp(2.6rem, 5.6vw, 4.6rem);
   line-height: 0.98;
   margin: 0 0 24px;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .hero__subtitle {
   font-size: 1.15rem;
   line-height: 1.6;
-  color: var(--navy-dark);
+  color: var(--text-muted);
   max-width: 480px;
   margin: 0 0 36px;
 }
@@ -45,7 +45,7 @@
   gap: 10px;
   font-family: var(--font-label);
   font-size: 0.95rem;
-  color: var(--navy-dark);
+  color: var(--text-muted);
 }
 
 .hero__meta-mark {
@@ -67,8 +67,8 @@
   grid-template-rows: 1fr 1fr;
   width: min(440px, 100%);
   aspect-ratio: 1 / 1;
-  border: 5px solid var(--ink);
-  box-shadow: 12px 12px 0 var(--ink);
+  border: 5px solid var(--line);
+  box-shadow: 12px 12px 0 var(--line);
   position: relative;
   z-index: 1;
 }

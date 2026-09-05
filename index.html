@@ -12,6 +12,18 @@
       rel="stylesheet"
     />
     <title>Amelia — Intelligence, Reissued</title>
+    <script>
+      (function () {
+        var stored = localStorage.getItem('amelia-theme');
+        var theme =
+          stored === 'light' || stored === 'dark'
+            ? stored
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
