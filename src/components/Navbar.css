@@ -1,0 +1,135 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--cream);
+  border-bottom: 3px solid transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navbar--scrolled {
+  border-bottom-color: var(--ink);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+  gap: 24px;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.navbar__mark {
+  width: 22px;
+  height: 22px;
+  background: var(--red);
+  flex-shrink: 0;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 32px;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: 0.02em;
+}
+
+.navbar__links a {
+  text-decoration: none;
+  color: var(--ink);
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.navbar__links a:hover {
+  color: var(--red);
+}
+
+.navbar__cta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.navbar__signin {
+  text-decoration: none;
+  font-family: var(--font-label);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.navbar__btn {
+  padding: 10px 22px;
+  font-size: 0.85rem;
+}
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.navbar__toggle span {
+  width: 24px;
+  height: 3px;
+  background: var(--ink);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.navbar__mobile {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .navbar__links,
+  .navbar__cta {
+    display: none;
+  }
+
+  .navbar__toggle {
+    display: flex;
+  }
+
+  .navbar__mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 24px 24px;
+    border-top: 3px solid var(--ink);
+    background: var(--cream);
+    font-family: var(--font-label);
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .navbar__mobile a {
+    text-decoration: none;
+    color: var(--ink);
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .navbar__mobile .btn {
+    margin-top: 12px;
+    text-align: center;
+  }
+}

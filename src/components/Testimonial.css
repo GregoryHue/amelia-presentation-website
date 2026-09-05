@@ -1,0 +1,51 @@
+.testimonial {
+  background: var(--cream);
+}
+
+.testimonial__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.testimonial__quote-mark {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  color: var(--red);
+  line-height: 1;
+  display: block;
+}
+
+.testimonial__quote {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.35;
+  color: var(--ink);
+  margin: 0 0 32px;
+}
+
+.testimonial__person {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.testimonial__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: 2px solid var(--ink);
+}
+
+.testimonial__name {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.testimonial__role {
+  font-size: 0.9rem;
+  color: var(--navy-dark);
+}

@@ -1,0 +1,53 @@
+.cta {
+  background: var(--navy);
+  padding: 100px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+}
+
+.cta__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+}
+
+.cta__mark {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background: var(--red);
+  margin-bottom: 28px;
+}
+
+.cta__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  color: var(--cream);
+  margin: 0 0 18px;
+}
+
+.cta__subtitle {
+  font-size: 1.1rem;
+  color: var(--sky);
+  margin: 0 0 36px;
+}
+
+.cta__actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cta__btn-outline {
+  border-color: var(--cream);
+  color: var(--cream);
+}
+
+.cta__btn-outline:hover {
+  background: var(--cream);
+  color: var(--ink);
+}
