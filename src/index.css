@@ -104,23 +104,17 @@ button {
   border-radius: 3px;
   border: 2px solid transparent;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: filter 0.15s ease;
   text-decoration: none;
-}
-
-.btn:active {
-  transform: translateY(1px);
 }
 
 .btn-primary {
   background: var(--red);
   color: var(--cream);
-  box-shadow: 4px 4px 0 var(--line);
 }
 
 .btn-primary:hover {
-  box-shadow: 6px 6px 0 var(--line);
-  transform: translate(-2px, -2px);
+  filter: brightness(0.92);
 }
 
 .btn-outline {

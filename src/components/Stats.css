@@ -1,7 +1,5 @@
 .stats {
   background: var(--red);
-  border-top: 3px solid var(--ink);
-  border-bottom: 3px solid var(--ink);
 }
 
 .stats__grid {
