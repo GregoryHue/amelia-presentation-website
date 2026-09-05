@@ -34,7 +34,6 @@
   text-transform: uppercase;
   font-size: 0.85rem;
   color: var(--cream);
-  opacity: 0.85;
 }
 
 @media (max-width: 720px) {

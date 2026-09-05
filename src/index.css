@@ -1,19 +1,19 @@
 :root {
-  --red: #c1272d;
-  --red-dark: #8f1d21;
-  --navy: #1c3644;
-  --navy-dark: #12242e;
-  --cream: #f2ead9;
-  --cream-dim: #e6dcc4;
-  --ink: #17181a;
-  --sky: #7fa6b3;
+  --red: #cf6a60;
+  --red-dark: #9c463d;
+  --navy: #3f6270;
+  --navy-dark: #2c4753;
+  --cream: #f7f1e6;
+  --cream-dim: #ece2d0;
+  --ink: #4a423a;
+  --sky: #a9c3cb;
 
   --bg: var(--cream);
   --text: var(--ink);
   --text-muted: var(--navy-dark);
   --line: var(--ink);
   --card-bg: var(--cream);
-  --card-hover-bg: #ece0c7;
+  --card-hover-bg: var(--cream-dim);
 
   --font-display: 'Anton', sans-serif;
   --font-label: 'Barlow Condensed', sans-serif;
@@ -24,9 +24,9 @@
 
 :root[data-theme='dark'] {
   --bg: #1b1815;
-  --text: #f2ead9;
+  --text: #f7f1e6;
   --text-muted: #b9ac93;
-  --line: #f2ead9;
+  --line: #f7f1e6;
   --card-bg: #221e19;
   --card-hover-bg: #2c2721;
 

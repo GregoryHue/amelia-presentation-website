@@ -38,15 +38,15 @@
   width: 64px;
   height: 64px;
   margin: 0 auto 20px;
-  border: 3px solid var(--red);
+  border: 3px solid var(--red-dark);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
   font-size: 1.3rem;
-  color: var(--red);
-  background: var(--navy-dark);
+  color: var(--red-dark);
+  background: var(--cream);
 }
 
 .how-step h3 {
