@@ -1,20 +1,19 @@
+import { useReveal } from '../hooks/useReveal';
 import './CTA.css';
 
 function CTA() {
+  const [ref, visible] = useReveal();
+
   return (
-    <section id="get-started" className="cta">
-      <div className="container cta__inner">
-        <span className="mark cta__mark" aria-hidden="true" />
-        <h2 className="cta__title">READY TO SEE IT IN ACTION?</h2>
-        <p className="cta__subtitle">
-          Placeholder closing pitch — one line encouraging the visitor to take the next step.
-        </p>
-        <div className="cta__actions">
-          <a href="#" className="btn btn-primary">
-            Get Started Free
-          </a>
-          <a href="#" className="btn btn-outline cta__btn-outline">
-            Talk to Sales
+    <section id="contact" className="closing section-pad">
+      <div className="container">
+        <div ref={ref} className={`closing__inner reveal ${visible ? 'reveal--visible' : ''}`}>
+          <h2 className="closing__title">Ready to see it in action?</h2>
+          <p className="closing__subtitle">
+            Placeholder closing pitch — one line encouraging the visitor to take the next step.
+          </p>
+          <a href="#top" className="bracket-link closing__cta">
+            Get started
           </a>
         </div>
       </div>
