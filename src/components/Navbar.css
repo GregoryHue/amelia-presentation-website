@@ -3,6 +3,11 @@
   z-index: 100;
   background: var(--bg);
   padding-top: 24px;
+  opacity: 0;
+}
+
+.navbar--visible {
+  opacity: 1;
 }
 
 @media (min-width: 720px) {

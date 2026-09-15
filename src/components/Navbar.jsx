@@ -8,7 +8,7 @@ const LINKS = [
 
 function Navbar() {
   return (
-    <header className="navbar">
+    <header className="navbar navbar--visible load-in load-in--top">
       <div className="container navbar__inner">
         <a href="#top" className="navbar__brand">
           AMELIA

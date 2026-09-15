@@ -4,6 +4,66 @@
   padding: 140px 0 96px;
 }
 
+.hero__splash {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  margin: 0;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  appearance: none;
+  font: inherit;
+}
+
+.hero__splash:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -8px;
+}
+
+.hero__splash--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hero__splash-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 10vw, 6rem);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  animation: splash-fade-in 0.8s ease both;
+}
+
+@keyframes splash-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__splash {
+    transition: none;
+  }
+
+  .hero__splash-text {
+    animation: none;
+  }
+}
+
 @media (min-width: 720px) {
   .hero {
     padding: 200px 0 120px;

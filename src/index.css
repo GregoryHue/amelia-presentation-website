@@ -202,6 +202,17 @@ section {
   }
 }
 
+@keyframes fade-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .load-in {
   animation: fade-slide-up 0.7s ease both;
 }
@@ -214,12 +225,20 @@ section {
   animation-name: fade-slide-right;
 }
 
+.load-in--top {
+  animation-name: fade-slide-down;
+}
+
 .load-in--delay-1 {
   animation-delay: 0.15s;
 }
 
 .load-in--delay-2 {
   animation-delay: 0.3s;
+}
+
+.load-in--delay-3 {
+  animation-delay: 0.45s;
 }
 
 @media (prefers-reduced-motion: reduce) {
