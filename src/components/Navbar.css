@@ -10,6 +10,10 @@
   opacity: 1;
 }
 
+.navbar.load-in {
+  animation-delay: 0.5s;
+}
+
 @media (min-width: 720px) {
   .navbar {
     position: fixed;

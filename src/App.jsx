@@ -5,13 +5,14 @@ import Capabilities from './components/Capabilities';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
 
-const SPLASH_DURATION = 3000;
+const BLANK_DURATION = 1000;
+const SPLASH_DURATION = 2000;
 
 function App() {
   const [introDone, setIntroDone] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIntroDone(true), SPLASH_DURATION);
+    const timer = setTimeout(() => setIntroDone(true), BLANK_DURATION + SPLASH_DURATION);
     return () => clearTimeout(timer);
   }, []);
 

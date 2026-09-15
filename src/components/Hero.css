@@ -40,7 +40,7 @@
   font-size: clamp(3rem, 10vw, 6rem);
   letter-spacing: 0.04em;
   color: var(--text);
-  animation: splash-fade-in 0.8s ease both;
+  animation: splash-fade-in 0.8s ease 0.5s both;
 }
 
 @keyframes splash-fade-in {
