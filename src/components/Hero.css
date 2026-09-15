@@ -18,7 +18,7 @@
   margin: 0;
   padding: 0;
   border: none;
-  cursor: pointer;
+  /* cursor: pointer; */
   appearance: none;
   font: inherit;
 }
@@ -53,6 +53,45 @@
     transform: none;
   }
 }
+
+.hero__splash-skip {
+  position: absolute;
+  bottom: 48px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255 ,255, 0);
+  border-radius: 50%;
+  color: var(--text);
+  opacity: 0;
+  animation: splash-skip-fade-in 0.8s ease 0.5s both;
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.hero__splash-skip svg {
+  width: 36px;
+  height: 36px;
+}
+
+.hero__splash-skip:hover {
+  border: 1px solid rgba(218, 94, 87, 1);
+  color: var(--accent);
+}
+
+
+
+@keyframes splash-skip-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.85;
+  }
+}
+
 
 @media (prefers-reduced-motion: reduce) {
   .hero__splash {

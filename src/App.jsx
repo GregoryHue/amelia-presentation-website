@@ -6,7 +6,7 @@ import CTA from './components/CTA';
 import Footer from './components/Footer';
 
 const BLANK_DURATION = 1000;
-const SPLASH_DURATION = 2000;
+const SPLASH_DURATION = 3000;
 
 function App() {
   const [introDone, setIntroDone] = useState(false);
