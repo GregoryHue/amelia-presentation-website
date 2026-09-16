@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useReveal } from '../hooks/useReveal';
 import './CTA.css';
 
@@ -12,9 +13,9 @@ function CTA() {
           <p className="closing__subtitle">
             Placeholder closing pitch — one line encouraging the visitor to take the next step.
           </p>
-          <a href="#top" className="bracket-link closing__cta">
+          <Link to="/" className="bracket-link closing__cta">
             Get started
-          </a>
+          </Link>
         </div>
       </div>
     </section>

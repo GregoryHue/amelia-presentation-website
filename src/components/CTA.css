@@ -1,7 +1,20 @@
 .closing {
   background: var(--bg);
-  border-top: 1px solid var(--line);
   text-align: center;
+  padding-top: 140px;
+  padding-bottom: 96px;
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 720px) {
+  .closing {
+    padding-top: 200px;
+  }
+}
+
+.closing .container {
+  width: 100%;
 }
 
 .closing__inner {

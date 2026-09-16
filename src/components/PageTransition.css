@@ -1,0 +1,21 @@
+.page-fade {
+  opacity: 1;
+  transition: opacity 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+.page-fade > * {
+  flex: 1 0 auto;
+}
+
+.page-fade--out {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade {
+    transition: none;
+  }
+}

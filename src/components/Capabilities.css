@@ -1,6 +1,12 @@
 .capabilities {
   background: var(--bg);
-  border-top: 1px solid var(--line);
+  padding-top: 140px;
+}
+
+@media (min-width: 720px) {
+  .capabilities {
+    padding-top: 200px;
+  }
 }
 
 .capabilities__head {

@@ -1,24 +1,25 @@
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const LINKS = [
-  { label: 'Home', href: '#top' },
-  { label: 'Approach', href: '#approach' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', to: '/' },
+  { label: 'Approach', to: '/approach' },
+  { label: 'Contact', to: '/contact' },
 ];
 
 function Navbar() {
   return (
     <header className="navbar navbar--visible load-in load-in--top">
       <div className="container navbar__inner">
-        <a href="#top" className="navbar__brand">
+        <Link to="/" className="navbar__brand">
           AMELIA
-        </a>
+        </Link>
 
         <nav className="navbar__links">
           {LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="bracket-link">
+            <Link key={link.to} to={link.to} className="bracket-link">
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>

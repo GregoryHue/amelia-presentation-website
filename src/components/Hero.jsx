@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './Hero.css';
 
 function Hero({ introDone, onSkipIntro }) {
@@ -40,9 +41,9 @@ function Hero({ introDone, onSkipIntro }) {
             Placeholder copy: a short, punchy description of what your AI product does and
             who it's for goes here. Swap this out for your real value proposition.
           </p>
-          <a href="#approach" className="bracket-link hero__cta">
+          <Link to="/approach" className="bracket-link hero__cta">
             See how it works
-          </a>
+          </Link>
           <i className="hero__caption">Placeholder trust line — no credit card required.</i>
         </div>
       </div>
