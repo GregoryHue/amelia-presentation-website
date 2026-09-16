@@ -1,0 +1,36 @@
+.background-model {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  /* No explicit z-index: a positioned element with z-index:auto stacks
+     among other positioned/auto siblings in DOM order. This canvas is
+     mounted before the page sections (see App.jsx), and those sections
+     are `position: relative` (see index.css), so — as long as neither
+     side sets an explicit z-index — the sections' own content naturally
+     paints on top of this canvas. That's what keeps the model behind
+     text everywhere except the one deliberate exception below. */
+  pointer-events: none;
+}
+
+/* While the Home splash is actively covering the hero (pre-reveal), the
+   model needs to render in front of it to be visible at all — the splash
+   itself uses z-index: 10 to sit above the hero on purpose. This class is
+   toggled by BackgroundModel based on shared splash state (see
+   src/splashState.js) and removed the instant the splash finishes or is
+   skipped, dropping the model back behind page content. */
+.background-model--above-splash {
+  z-index: 20;
+}
+
+@media (max-width: 999px) {
+  .background-model {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .background-model {
+    transition: none;
+  }
+}

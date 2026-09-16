@@ -1,4 +1,10 @@
 .footer {
+  /* Positioned (even with no offset) so it shares the same stacking tier
+     as the background model's canvas, ordered by DOM position — without
+     this, a non-positioned element sits *below* any positioned z-index:
+     auto sibling regardless of source order, which would let the model
+     render over the footer's links. */
+  position: relative;
   background: var(--bg);
   padding: 28px 0;
 }

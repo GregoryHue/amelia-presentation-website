@@ -1,0 +1,30 @@
+.idle-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+  animation-name: idle-progress-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  z-index: 200;
+  pointer-events: none;
+}
+
+@keyframes idle-progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .idle-progress-bar {
+    display: none;
+  }
+}

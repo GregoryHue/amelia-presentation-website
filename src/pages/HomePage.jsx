@@ -1,28 +1,25 @@
 import { useEffect, useState } from 'react';
 import Hero from '../components/Hero';
+import { markSplashPlayed, shouldShowSplash } from '../splashState';
 
 const BLANK_DURATION = 1000;
 const SPLASH_DURATION = 3000;
 
-// Module-scoped so it survives client-side navigation back to "/" but
-// resets on an actual page reload.
-let hasPlayedIntro = false;
-
 function HomePage() {
-  const [introDone, setIntroDone] = useState(hasPlayedIntro);
+  const [introDone, setIntroDone] = useState(!shouldShowSplash());
 
   useEffect(() => {
-    if (hasPlayedIntro) return undefined;
+    if (!shouldShowSplash()) return undefined;
 
     const timer = setTimeout(() => {
-      hasPlayedIntro = true;
+      markSplashPlayed();
       setIntroDone(true);
     }, BLANK_DURATION + SPLASH_DURATION);
     return () => clearTimeout(timer);
   }, []);
 
   const handleSkipIntro = () => {
-    hasPlayedIntro = true;
+    markSplashPlayed();
     setIntroDone(true);
   };
 

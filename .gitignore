@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Raw 3D source assets (too large for the repo; keep the decimated .glb instead)
+src/assets/*.obj
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
