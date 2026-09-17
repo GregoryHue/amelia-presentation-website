@@ -15,6 +15,7 @@ function Hero({ introDone, onSkipIntro }) {
         aria-label="Skip intro animation"
       >
         <span className="hero__splash-text">Amelia</span>
+        <span className="hero__splash-subtitle">Placeholder — intelligence, reissued for the way you actually work.</span>
         <span className="hero__splash-skip" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"  >
             <path d="M9 6l6 6-6 6" />

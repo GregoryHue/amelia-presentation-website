@@ -8,8 +8,10 @@
   inset: 0;
   z-index: 10;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 16px;
   background: var(--bg);
   opacity: 1;
   visibility: visible;
@@ -51,6 +53,17 @@
     opacity: 1;
     transform: none;
   }
+}
+
+.hero__splash-subtitle {
+  max-width: 46ch;
+  padding: 0 24px;
+  font-size: 1.05rem;
+  font-weight: 300;
+  text-align: center;
+  color: var(--text-muted);
+  opacity: 0;
+  animation: splash-fade-in 0.8s ease 0.9s both;
 }
 
 .hero__splash-skip {
@@ -97,7 +110,8 @@
     transition: none;
   }
 
-  .hero__splash-text {
+  .hero__splash-text,
+  .hero__splash-subtitle {
     animation: none;
   }
 }
