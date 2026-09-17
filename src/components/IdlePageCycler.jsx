@@ -81,11 +81,15 @@ function IdlePageCycler() {
       if (isRealActivity) {
         hasInteractedRef.current = true;
         setBarVisible(false);
-      } else if (!hasInteractedRef.current) {
-        setBarVisible(true);
-        setBarDuration(IDLE_DELAY);
-        setBarKey((k) => k + 1);
       }
+      setBarVisible(false);
+      clearTimeout(idleTimerRef.current);
+      // Once the user has ever interacted, cycling is done for good — no
+      // re-arming, silent or otherwise.
+      if (hasInteractedRef.current) return;
+      setBarVisible(true);
+      setBarDuration(IDLE_DELAY);
+      setBarKey((k) => k + 1);
       armIdleTimer();
     };
 
