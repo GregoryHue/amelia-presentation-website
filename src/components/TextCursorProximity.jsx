@@ -38,9 +38,32 @@ const TextCursorProximity = forwardRef(
         .map(() => useMotionValue(0))
     );
 
+    const frameCountRef = useRef(0);
+
     useAnimationFrame(() => {
+      // Measuring every letter's getBoundingClientRect() on every single
+      // frame (and there are several of these components mounted at
+      // once) is expensive for no visible benefit on a cursor-follow
+      // effect — every other frame (~30fps) still reads as smooth.
+      frameCountRef.current += 1;
+      if (frameCountRef.current % 2 !== 0) return;
+
       if (!containerRef.current) return;
       const containerRect = containerRef.current.getBoundingClientRect();
+      const { x, y } = mousePositionRef.current;
+
+      // Cheap bounds check first: skip the per-letter layout reads
+      // entirely while the cursor isn't anywhere near this text block
+      // (the common case for most of the page, most of the time).
+      const withinBounds =
+        x >= -radius && x <= containerRect.width + radius && y >= -radius && y <= containerRect.height + radius;
+
+      if (!withinBounds) {
+        letterProximities.current.forEach((proximity) => {
+          if (proximity.get() !== 0) proximity.set(0);
+        });
+        return;
+      }
 
       letterRefs.current.forEach((letterRef, index) => {
         if (!letterRef) return;
@@ -49,12 +72,7 @@ const TextCursorProximity = forwardRef(
         const letterCenterX = rect.left + rect.width / 2 - containerRect.left;
         const letterCenterY = rect.top + rect.height / 2 - containerRect.top;
 
-        const distance = calculateDistance(
-          mousePositionRef.current.x,
-          mousePositionRef.current.y,
-          letterCenterX,
-          letterCenterY
-        );
+        const distance = calculateDistance(x, y, letterCenterX, letterCenterY);
 
         const proximity = calculateFalloff(distance, radius, falloff);
         letterProximities.current[index].set(proximity);

@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import HomePage from '../pages/HomePage';
-import ApproachPage from '../pages/ApproachPage';
-import TeamPage from '../pages/TeamPage';
-import ContactPage from '../pages/ContactPage';
 import './PageTransition.css';
+
+// Code-split per route: visiting Home shouldn't also pull down Team's
+// (AnimatedTestimonials + motion) or Approach/Contact's code upfront.
+const HomePage = lazy(() => import('../pages/HomePage'));
+const ApproachPage = lazy(() => import('../pages/ApproachPage'));
+const TeamPage = lazy(() => import('../pages/TeamPage'));
+const ContactPage = lazy(() => import('../pages/ContactPage'));
 
 const FADE_DURATION = 250;
 
@@ -34,12 +37,14 @@ function PageTransition() {
 
   return (
     <div className={`page-fade ${fading ? 'page-fade--out' : ''}`}>
-      <Routes location={displayLocation}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/approach" element={<ApproachPage />} />
-        <Route path="/team" element={<TeamPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes location={displayLocation}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/approach" element={<ApproachPage />} />
+          <Route path="/team" element={<TeamPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 }

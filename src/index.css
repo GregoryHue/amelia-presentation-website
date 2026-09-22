@@ -144,22 +144,6 @@ section {
   transform: translate(0, 0);
 }
 
-.reveal--left {
-  transform: translateX(-32px);
-}
-
-.reveal--left.reveal--visible {
-  transform: translate(0, 0);
-}
-
-.reveal--right {
-  transform: translateX(32px);
-}
-
-.reveal--right.reveal--visible {
-  transform: translate(0, 0);
-}
-
 .reveal--delay-1 {
   transition-delay: 0.12s;
 }
@@ -173,9 +157,7 @@ section {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal,
-  .reveal--left,
-  .reveal--right {
+  .reveal {
     transition: none;
     transform: none;
     opacity: 1;

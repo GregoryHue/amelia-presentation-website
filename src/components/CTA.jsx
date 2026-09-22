@@ -3,14 +3,8 @@ import { Link } from 'react-router-dom';
 import { useReveal } from '../hooks/useReveal';
 import BreathingText from './BreathingText';
 import TextCursorProximity from './TextCursorProximity';
+import { PROXIMITY_STYLES } from '../lib/proximityStyles';
 import './CTA.css';
-
-// motion's color interpolation needs resolved color values, not CSS
-// custom-property references (var(--text-muted) can't be mixed as a
-// color) — these must stay in sync with the tokens in index.css.
-const PROXIMITY_STYLES = {
-  color: { from: '#a1a1aa', to: '#ffffff' },
-};
 
 function CTA() {
   const [ref, visible] = useReveal();

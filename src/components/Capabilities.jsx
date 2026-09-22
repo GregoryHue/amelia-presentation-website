@@ -1,14 +1,8 @@
 import { useRef } from 'react';
 import { useReveal } from '../hooks/useReveal';
 import TextCursorProximity from './TextCursorProximity';
+import { PROXIMITY_STYLES } from '../lib/proximityStyles';
 import './Capabilities.css';
-
-// motion's color interpolation needs resolved color values, not CSS
-// custom-property references (var(--text-muted) can't be mixed as a
-// color) — these must stay in sync with the tokens in index.css.
-const PROXIMITY_STYLES = {
-  color: { from: '#a1a1aa', to: '#ffffff' },
-};
 
 const ITEMS = [
   {

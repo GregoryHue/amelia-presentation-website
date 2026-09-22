@@ -3,14 +3,8 @@ import AnimatedTestimonials from './AnimatedTestimonials';
 import TextCursorProximity from './TextCursorProximity';
 import { useReveal } from '../hooks/useReveal';
 import { placeholderAvatar } from '../lib/placeholderAvatar';
+import { PROXIMITY_STYLES } from '../lib/proximityStyles';
 import './Team.css';
-
-// motion's color interpolation needs resolved color values, not CSS
-// custom-property references (var(--text-muted) can't be mixed as a
-// color) — these must stay in sync with the tokens in index.css.
-const PROXIMITY_STYLES = {
-  color: { from: '#a1a1aa', to: '#ffffff' },
-};
 
 const MEMBERS = [
   {

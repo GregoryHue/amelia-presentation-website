@@ -3,16 +3,10 @@ import { Link } from 'react-router-dom';
 import TextRotate from './TextRotate';
 import TextCursorProximity from './TextCursorProximity';
 import AuroraBackground from './AuroraBackground';
+import { PROXIMITY_STYLES } from '../lib/proximityStyles';
 import './Hero.css';
 
 const TAGLINE_TEXTS = ['Intelligence, reissued.', 'Focus, restored.', 'Time, reclaimed.'];
-
-// motion's color interpolation needs resolved color values, not CSS
-// custom-property references (var(--text) can't be mixed as a color) —
-// these must stay in sync with the --text/--accent tokens in index.css.
-const PROXIMITY_STYLES = {
-  color: { from: '#a1a1aa', to: '#ffffff' },
-};
 
 function Hero({ introDone, onSkipIntro }) {
   const loadIn = (extra = '') => (introDone ? `load-in ${extra}`.trim() : '');
