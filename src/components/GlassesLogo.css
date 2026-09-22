@@ -1,0 +1,42 @@
+.glasses-logo {
+  width: 44px;
+  height: auto;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.glasses-logo-eye--wink {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.navbar__brand:hover .glasses-logo-eye--wink {
+  animation: glasses-wink 0.65s cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+@keyframes glasses-wink {
+  0% {
+    transform: scaleY(1);
+  }
+  15% {
+    transform: scaleY(1.08);
+  }
+  45% {
+    transform: scaleY(0.05);
+  }
+  65% {
+    transform: scaleY(0.05);
+  }
+  85% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar__brand:hover .glasses-logo-eye--wink {
+    animation: none;
+  }
+}

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import modelUrl from '../assets/amelia.glb?url';
 import { MIN_VIEWPORT_WIDTH } from '../backgroundModelConfig';
 import { shouldShowSplash, subscribeSplashPlayed } from '../splashState';
@@ -14,15 +15,21 @@ import './BackgroundModel.css';
 // world-space position would drift on resize, since it projects
 // differently once the camera's aspect ratio changes).
 const ROUTE_TARGETS = {
-  '/': { x: 0.59, y: 0.25, depth: 0, scale: 1 },
-  '/approach': { x: 0.35, y: 0.65, depth: 0, scale: 1.3 },
-  '/contact': { x: 0.50, y: 0.50, depth: 0, scale: 1.6  },
+  '/': { x: 0.59, y: 0.25, depth: 0, scale: 0.5 },
+  '/approach': { x: 0.35, y: 0.65, depth: 0, scale: 0.8 },
+  // spin: false — on Contact the model settles to face the camera head-on
+  // instead of continuing its idle spin (see the animate loop below).
+  // y is pushed below the visible frame (>1) and scale is large, so only
+  // the top portion (head/shoulders, which sits above the model's own
+  // center pivot) remains in view — the rest extends off-screen at the
+  // bottom, cropped by the camera frustum like a portrait close-up.
+  '/contact': { x: 0.50, y: 0.50, depth: 0, scale: 1.1, spin: false },
 };
 
 // Where the model sits strictly while the Home splash is covering the
 // hero (see `aboveSplash` below) — independent of '/'s own target, which
 // only applies once the splash has actually finished or been skipped.
-const SPLASH_TARGET = { x: 0.5, y: 0.25, depth: 0, scale: 0.7 };
+const SPLASH_TARGET = { x: 0.5, y: 0.25, depth: 0, scale: 0.5 };
 
 const DEFAULT_TARGET = ROUTE_TARGETS['/'];
 
@@ -108,13 +115,31 @@ function BackgroundModel() {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
+    // Filmic tone mapping gives highlights a softer, more natural falloff
+    // than the flat default.
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+    // Dimmer, neutral-white studio lighting — keeps the model's dark clay
+    // vertex-color tone rather than lifting it toward grey/white.
+    // scene.add(new THREE.AmbientLight(0xffffff, 1.1));
+
+    // Key: pure white, no warmth — a plainly "white light" cast.
     const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
     keyLight.position.set(3, 4, 5);
     scene.add(keyLight);
-    const rimLight = new THREE.DirectionalLight(0xda5e57, 0.7);
-    rimLight.position.set(-4, -2, -3);
+
+    // Fill: white, fairly strong — keeps shadows soft and open rather
+    // than letting the key light carve out hard contrast.
+    const fillLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    fillLight.position.set(-3, 1, 3);
+    scene.add(fillLight);
+
+    // Rim: white as well now (was the saturated accent red), just enough
+    // to separate the silhouette from the background without tinting it.
+    const rimLight = new THREE.DirectionalLight(0xffffff, 0.35);
+    rimLight.position.set(-4, 2.5, -4);
     scene.add(rimLight);
 
     let disposed = false;
@@ -130,6 +155,7 @@ function BackgroundModel() {
     let currentScale = targetRef.current.scale;
 
     const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
     loader.load(modelUrl, (gltf) => {
       if (disposed) return;
       group = gltf.scene;
@@ -137,8 +163,10 @@ function BackgroundModel() {
         if (child.isMesh) {
           child.material = new THREE.MeshStandardMaterial({
             vertexColors: true,
-            roughness: 0.65,
-            metalness: 0.05,
+            roughness: 0.55,
+            metalness: 0.03,
+            emissive: new THREE.Color(0x000000),
+            emissiveIntensity: 0,
           });
         }
       });
@@ -154,9 +182,20 @@ function BackgroundModel() {
       const delta = clock.getDelta();
 
       if (group) {
+        const facingCamera = targetRef.current.spin === false;
+
         if (!reduceMotion) {
-          group.rotation.y += delta * 0.3;
-          group.rotation.x = Math.sin(clock.elapsedTime * 0.15) * 0.08;
+          if (facingCamera) {
+            // Ease down to a stop facing the camera (rotation 0) rather
+            // than snapping — decays fast when there's a lot of spin
+            // still built up, and settles cleanly once close to 0.
+            const rotLerp = 1 - Math.pow(0.001, delta);
+            group.rotation.y += (0 - group.rotation.y) * rotLerp;
+            group.rotation.x += (0 - group.rotation.x) * rotLerp;
+          } else {
+            group.rotation.y += delta * 0.3;
+            group.rotation.x = Math.sin(clock.elapsedTime * 0.15) * 0.08;
+          }
         }
 
         const targetPos = targetToWorld(camera, targetRef.current);

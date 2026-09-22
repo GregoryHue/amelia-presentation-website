@@ -113,6 +113,7 @@
   .hero__splash-text,
   .hero__splash-subtitle {
     animation: none;
+    opacity: 1;
   }
 }
 

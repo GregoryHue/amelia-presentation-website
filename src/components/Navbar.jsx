@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import GlassesLogo from './GlassesLogo';
 import './Navbar.css';
 
 const LINKS = [
@@ -12,6 +13,7 @@ function Navbar() {
     <header className="navbar navbar--visible load-in load-in--top">
       <div className="container navbar__inner">
         <Link to="/" className="navbar__brand">
+          <GlassesLogo />
           AMELIA
         </Link>
 
