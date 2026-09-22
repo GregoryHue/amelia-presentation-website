@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import modelUrl from '../assets/amelia.glb?url';
 import { MIN_VIEWPORT_WIDTH } from '../backgroundModelConfig';
-import { shouldShowSplash, subscribeSplashPlayed } from '../splashState';
 import './BackgroundModel.css';
 
 // Simple screen-space spot per route (x/y as fractions of the viewport,
@@ -15,26 +14,21 @@ import './BackgroundModel.css';
 // world-space position would drift on resize, since it projects
 // differently once the camera's aspect ratio changes).
 const ROUTE_TARGETS = {
-  '/': { x: 0.59, y: 0.25, depth: 0, scale: 0.5 },
-  '/approach': { x: 0.35, y: 0.65, depth: 0, scale: 0.8 },
+  '/': { x: 0.59, y: 0.25, depth: 0, scale: 0.3 },
+  '/approach': { x: 0.35, y: 0.65, depth: 0, scale: 0.7 },
+  '/team': { x: 0.75, y: 0.25, depth: 0, scale: 0.5 },
   // spin: false — on Contact the model settles to face the camera head-on
   // instead of continuing its idle spin (see the animate loop below).
   // y is pushed below the visible frame (>1) and scale is large, so only
   // the top portion (head/shoulders, which sits above the model's own
   // center pivot) remains in view — the rest extends off-screen at the
   // bottom, cropped by the camera frustum like a portrait close-up.
-  '/contact': { x: 0.50, y: 0.50, depth: 0, scale: 1.1, spin: false },
+  '/contact': { x: 0.50, y: 0.60, depth: 0, scale: 0.9, spin: false },
 };
-
-// Where the model sits strictly while the Home splash is covering the
-// hero (see `aboveSplash` below) — independent of '/'s own target, which
-// only applies once the splash has actually finished or been skipped.
-const SPLASH_TARGET = { x: 0.5, y: 0.25, depth: 0, scale: 0.5 };
 
 const DEFAULT_TARGET = ROUTE_TARGETS['/'];
 
-function getTarget(pathname, splashActive) {
-  if (pathname === '/' && splashActive) return SPLASH_TARGET;
+function getTarget(pathname) {
   return ROUTE_TARGETS[pathname] || DEFAULT_TARGET;
 }
 
@@ -50,47 +44,16 @@ function targetToWorld(camera, target) {
 function BackgroundModel() {
   const canvasRef = useRef(null);
   const location = useLocation();
-  const targetRef = useRef(getTarget(location.pathname, location.pathname === '/' && shouldShowSplash()));
-  // The model normally renders *behind* page content (see the CSS: no
-  // explicit z-index, so it stacks by DOM order behind the sections,
-  // which are positioned too). The one exception is the Home splash,
-  // which sits in front of the hero on purpose to hide it pre-reveal —
-  // while that's happening, the model needs to jump in front of it too,
-  // or it'd be invisible during the intro. `splashState` is the shared
-  // source of truth HomePage also uses, so both stay in sync without
-  // prop-drilling across the route tree.
-  const [aboveSplash, setAboveSplash] = useState(location.pathname === '/' && shouldShowSplash());
+  // Renders *behind* page content (see the CSS: no explicit z-index, so
+  // it stacks by DOM order behind the sections, which are positioned
+  // too) — including the Home splash, which stays in front of it the
+  // whole time it's covering the hero, so the model simply isn't visible
+  // until the splash has faded away.
+  const targetRef = useRef(getTarget(location.pathname));
 
   useEffect(() => {
-    const splashActive = location.pathname === '/' && shouldShowSplash();
-    targetRef.current = getTarget(location.pathname, splashActive);
-    setAboveSplash(splashActive);
+    targetRef.current = getTarget(location.pathname);
   }, [location]);
-
-  useEffect(() => {
-    // The splash doesn't vanish instantly — it fades out over 0.6s (see
-    // .hero__splash's transition in Hero.css). Dropping the z-index boost
-    // the instant the splash is marked "played" put the model back behind
-    // a still-semi-opaque splash for that whole 0.6s, so it visibly
-    // blinked out and back in. Wait out the same fade before reverting.
-    let timeoutId = null;
-    const unsubscribe = subscribeSplashPlayed(() => {
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      timeoutId = setTimeout(
-        () => {
-          setAboveSplash(false);
-          // Splash is done — glide from SPLASH_TARGET over to Home's own
-          // spot, the same way the model moves between pages.
-          targetRef.current = ROUTE_TARGETS['/'];
-        },
-        0
-      );
-    });
-    return () => {
-      unsubscribe();
-      clearTimeout(timeoutId);
-    };
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -232,13 +195,7 @@ function BackgroundModel() {
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className={`background-model ${aboveSplash ? 'background-model--above-splash' : ''}`}
-      aria-hidden="true"
-    />
-  );
+  return <canvas ref={canvasRef} className="background-model" aria-hidden="true" />;
 }
 
 export default BackgroundModel;

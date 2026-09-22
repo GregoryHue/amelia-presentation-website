@@ -13,16 +13,6 @@
   pointer-events: none;
 }
 
-/* While the Home splash is actively covering the hero (pre-reveal), the
-   model needs to render in front of it to be visible at all — the splash
-   itself uses z-index: 10 to sit above the hero on purpose. This class is
-   toggled by BackgroundModel based on shared splash state (see
-   src/splashState.js) and removed the instant the splash finishes or is
-   skipped, dropping the model back behind page content. */
-.background-model--above-splash {
-  z-index: 20;
-}
-
 @media (max-width: 999px) {
   .background-model {
     display: none;

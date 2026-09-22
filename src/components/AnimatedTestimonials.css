@@ -1,0 +1,112 @@
+.animated-testimonials {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.animated-testimonials__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (min-width: 720px) {
+  .animated-testimonials__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+}
+
+.animated-testimonials__media {
+  position: relative;
+  height: 320px;
+  width: 100%;
+  perspective: 1000px;
+}
+
+.animated-testimonials__image-wrap {
+  position: absolute;
+  inset: 0;
+  transform-origin: bottom;
+}
+
+.animated-testimonials__image {
+  height: 100%;
+  width: 100%;
+  border-radius: 24px;
+  object-fit: cover;
+  object-position: center;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+}
+
+.animated-testimonials__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+.animated-testimonials__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text);
+  margin: 0;
+}
+
+.animated-testimonials__designation {
+  font-size: 0.9rem;
+  color: var(--accent);
+  margin: 4px 0 0;
+}
+
+.animated-testimonials__quote {
+  margin: 32px 0 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.animated-testimonials__word {
+  display: inline-block;
+}
+
+.animated-testimonials__controls {
+  display: flex;
+  gap: 16px;
+  padding-top: 48px;
+}
+
+@media (min-width: 720px) {
+  .animated-testimonials__controls {
+    padding-top: 0;
+  }
+}
+
+.animated-testimonials__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  color: var(--text);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.animated-testimonials__button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.animated-testimonials__button svg {
+  width: 18px;
+  height: 18px;
+}

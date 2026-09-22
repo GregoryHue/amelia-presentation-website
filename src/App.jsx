@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 import IdlePageCycler from './components/IdlePageCycler';
+import AuroraBackground from './components/AuroraBackground';
 import { MIN_VIEWPORT_WIDTH } from './backgroundModelConfig';
 
 // Code-split: three.js is a heavy dependency that only earns its keep on
@@ -22,6 +23,7 @@ function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <IdlePageCycler />
+      <AuroraBackground />
       {showModel && (
         <Suspense fallback={null}>
           <BackgroundModel />

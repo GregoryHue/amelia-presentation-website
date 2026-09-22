@@ -164,6 +164,13 @@
   font-weight: 300;
   color: var(--text-muted);
   margin: 0;
+  justify-content: center;
+}
+
+@media (min-width: 720px) {
+  .hero__tagline {
+    justify-content: flex-end;
+  }
 }
 
 .hero__mark {

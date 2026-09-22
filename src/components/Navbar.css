@@ -1,7 +1,7 @@
 .navbar {
   position: relative;
   z-index: 100;
-  background: var(--bg);
+  /* background: var(--bg); */
   padding-top: 24px;
   opacity: 0;
 }

@@ -1,5 +1,14 @@
+import { useRef } from 'react';
 import { useReveal } from '../hooks/useReveal';
+import TextCursorProximity from './TextCursorProximity';
 import './Capabilities.css';
+
+// motion's color interpolation needs resolved color values, not CSS
+// custom-property references (var(--text-muted) can't be mixed as a
+// color) — these must stay in sync with the tokens in index.css.
+const PROXIMITY_STYLES = {
+  color: { from: '#a1a1aa', to: '#ffffff' },
+};
 
 const ITEMS = [
   {
@@ -21,15 +30,27 @@ const ITEMS = [
 
 function CapabilityItem({ item, index }) {
   const [ref, visible] = useReveal();
+  const containerRef = useRef(null);
 
   return (
     <div
-      ref={ref}
+      ref={(el) => {
+        ref.current = el;
+        containerRef.current = el;
+      }}
       className={`capability reveal ${visible ? 'reveal--visible' : ''} reveal--delay-${index + 1}`}
     >
       <span className="capability__n">{item.n}</span>
       <h3>{item.title}</h3>
-      <p>{item.body}</p>
+      <TextCursorProximity
+        as="p"
+        containerRef={containerRef}
+        styles={PROXIMITY_STYLES}
+        radius={70}
+        falloff="gaussian"
+      >
+        {item.body}
+      </TextCursorProximity>
     </div>
   );
 }

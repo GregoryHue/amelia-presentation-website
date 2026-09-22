@@ -1,0 +1,31 @@
+.breathing-text {
+  position: relative;
+}
+
+.breathing-text::after {
+  content: attr(data-text);
+  position: absolute;
+  font-weight: 900;
+  pointer-events: none;
+  overflow: hidden;
+  user-select: none;
+  visibility: hidden;
+  height: 0;
+}
+
+.breathing-text__letter {
+  display: inline-block;
+  white-space: pre;
+}
+
+.breathing-text__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

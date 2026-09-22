@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import ApproachPage from '../pages/ApproachPage';
+import TeamPage from '../pages/TeamPage';
 import ContactPage from '../pages/ContactPage';
 import './PageTransition.css';
 
@@ -36,6 +37,7 @@ function PageTransition() {
       <Routes location={displayLocation}>
         <Route path="/" element={<HomePage />} />
         <Route path="/approach" element={<ApproachPage />} />
+        <Route path="/team" element={<TeamPage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </div>
