@@ -17,6 +17,7 @@ const ROUTE_TARGETS = {
   '/': { x: 0.59, y: 0.25, depth: 0, scale: 0.3 },
   '/approach': { x: 0.35, y: 0.65, depth: 0, scale: 0.7 },
   '/team': { x: 0.75, y: 0.25, depth: 0, scale: 0.5 },
+  '/demo': { x: 0.88, y: 0.18, depth: 0, scale: 0.4 },
   // spin: false — on Contact the model settles to face the camera head-on
   // instead of continuing its idle spin (see the animate loop below).
   // y is pushed below the visible frame (>1) and scale is large, so only

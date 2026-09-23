@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './IdlePageCycler.css';
 
-const ROUTES = ['/', '/approach', '/team', '/contact'];
+const ROUTES = ['/', '/approach', '/team', '/demo', '/contact'];
 const IDLE_DELAY = 10000;
 const CYCLE_INTERVAL = 8000;
 // Deliberately excludes 'scroll': our own auto-navigation calls

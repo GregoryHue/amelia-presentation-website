@@ -7,6 +7,7 @@ import './PageTransition.css';
 const HomePage = lazy(() => import('../pages/HomePage'));
 const ApproachPage = lazy(() => import('../pages/ApproachPage'));
 const TeamPage = lazy(() => import('../pages/TeamPage'));
+const DemoPage = lazy(() => import('../pages/DemoPage'));
 const ContactPage = lazy(() => import('../pages/ContactPage'));
 
 const FADE_DURATION = 250;
@@ -42,6 +43,7 @@ function PageTransition() {
           <Route path="/" element={<HomePage />} />
           <Route path="/approach" element={<ApproachPage />} />
           <Route path="/team" element={<TeamPage />} />
+          <Route path="/demo" element={<DemoPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </Suspense>
