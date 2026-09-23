@@ -35,11 +35,11 @@
   );
   --aurora-gradient: repeating-linear-gradient(
     100deg,
-    #c2504f 10%,
-    #c9a0c4 15%,
-    #e2a89a 20%,
-    #f0d6dc 25%,
-    #da5e57 30%
+    #d4a13f 10%,
+    #f2d17a 15%,
+    #e8b84f 20%,
+    #fbe8b0 25%,
+    #dac857 30%
   );
 
   position: absolute;
