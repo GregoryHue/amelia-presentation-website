@@ -2,44 +2,50 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
-import modelUrl from '../assets/amelia.glb?url';
+import modelUrl from '../assets/LittlestTokyo.glb?url';
 import { MIN_VIEWPORT_WIDTH } from '../backgroundModelConfig';
 import './BackgroundModel.css';
 
-// Simple screen-space spot per route (x/y as fractions of the viewport,
-// 0-1) — purely decorative background placement, not fitted around any
-// page's text. Converted to world space via unproject() each frame so it
-// still tracks the same relative spot when the window resizes (a raw
-// world-space position would drift on resize, since it projects
-// differently once the camera's aspect ratio changes).
-const ROUTE_TARGETS = {
-  '/': { x: 0.59, y: 0.25, depth: 0, scale: 0.3 },
-  '/approach': { x: 0.35, y: 0.65, depth: 0, scale: 0.7 },
-  '/team': { x: 0.75, y: 0.25, depth: 0, scale: 0.5 },
-  '/demo': { x: 0.88, y: 0.18, depth: 0, scale: 0.4 },
-  // spin: false — on Contact the model settles to face the camera head-on
-  // instead of continuing its idle spin (see the animate loop below).
-  // y is pushed below the visible frame (>1) and scale is large, so only
-  // the top portion (head/shoulders, which sits above the model's own
-  // center pivot) remains in view — the rest extends off-screen at the
-  // bottom, cropped by the camera frustum like a portrait close-up.
-  '/contact': { x: 0.50, y: 0.60, depth: 0, scale: 0.9, spin: false },
+// The model itself never moves — it's recentered on load (see
+// recenterAndScale below) and stays at the world origin. What changes per
+// route is the camera: explicit position + lookAt per page, so each page
+// gets its own framing while the model always reads as "centered".
+// lookAt defaults to the model's center (0,0,0) if omitted.
+const CAMERA_POSES = {
+  '/': { position: { x: 4, y: 1, z: 3 }, lookAt: { x: 0, y: -0.5, z: 0 } },
+  '/approach': { position: { x: -3, y: -0.5, z: 1.5 }, lookAt: { x: 3, y: 0, z: -3 } },
+  '/team': { position: { x: -4.17, y: 1.36, z: 3.31 }, lookAt: { x: 0, y: 0, z: 0 } },
+  '/demo': { position: { x: 2.52, y: 2.88, z: 4.62 }, lookAt: { x: 0, y: 0, z: 0 } },
+  '/contact': { position: { x: 0.2, y: 0.48, z: 3.97 }, lookAt: { x: 0, y: 0, z: 0 } },
 };
 
-const DEFAULT_TARGET = ROUTE_TARGETS['/'];
+const DEFAULT_POSE = CAMERA_POSES['/'];
 
-function getTarget(pathname) {
-  return ROUTE_TARGETS[pathname] || DEFAULT_TARGET;
+function getCameraPose(pathname) {
+  return CAMERA_POSES[pathname] || DEFAULT_POSE;
 }
 
-function targetToWorld(camera, target) {
-  const ndcX = target.x * 2 - 1;
-  const ndcY = -(target.y * 2 - 1);
-  const point = new THREE.Vector3(ndcX, ndcY, 0.5).unproject(camera);
-  const direction = point.sub(camera.position).normalize();
-  const distance = (target.depth - camera.position.z) / direction.z;
-  return camera.position.clone().add(direction.multiplyScalar(distance));
+// Normalizes whatever scale/origin a swapped-in model happens to be
+// authored at: uniformly scales it to a consistent on-screen size, then
+// shifts it so its bounding-box center sits exactly at the world origin —
+// which is also where the camera always looks, so the model lands dead
+// center regardless of its own source units or pivot placement.
+const TARGET_SIZE = 2.4;
+
+function recenterAndScale(object) {
+  const rawBox = new THREE.Box3().setFromObject(object);
+  const rawSize = rawBox.getSize(new THREE.Vector3());
+  const maxDim = Math.max(rawSize.x, rawSize.y, rawSize.z);
+  const scale = maxDim > 0 ? TARGET_SIZE / maxDim : 1;
+  object.scale.setScalar(scale);
+
+  const scaledBox = new THREE.Box3().setFromObject(object);
+  const center = scaledBox.getCenter(new THREE.Vector3());
+  object.position.sub(center);
+
+  return { groundY: scaledBox.min.y - center.y };
 }
 
 function BackgroundModel() {
@@ -50,10 +56,10 @@ function BackgroundModel() {
   // too) — including the Home splash, which stays in front of it the
   // whole time it's covering the hero, so the model simply isn't visible
   // until the splash has faded away.
-  const targetRef = useRef(getTarget(location.pathname));
+  const targetRef = useRef(getCameraPose(location.pathname));
 
   useEffect(() => {
-    targetRef.current = getTarget(location.pathname);
+    targetRef.current = getCameraPose(location.pathname);
   }, [location]);
 
   useEffect(() => {
@@ -64,35 +70,45 @@ function BackgroundModel() {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 5);
-    // A camera's matrixWorld isn't recomputed the instant .position is set
-    // — it only updates during renderer.render() (or an explicit call
-    // like this one). targetToWorld()'s unproject() reads matrixWorld
-    // directly, so computing the model's initial position below, before
-    // any render has ever happened, was unprojecting against the
-    // camera's stale default (as if still at the origin) — producing a
-    // much-too-small position that then visibly snapped/dragged to the
-    // correct spot once real render() calls started keeping the matrix
-    // in sync each frame. This call fixes that for the very first frame.
-    camera.updateMatrixWorld(true);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     // Filmic tone mapping gives highlights a softer, more natural falloff
     // than the flat default.
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    // renderer.toneMappingExposure = 1.1;
+    // renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     // Dimmer, neutral-white studio lighting — keeps the model's dark clay
     // vertex-color tone rather than lifting it toward grey/white.
     // scene.add(new THREE.AmbientLight(0xffffff, 1.1));
 
-    // Key: pure white, no warmth — a plainly "white light" cast.
+    // Key: pure white, no warmth — a plainly "white light" cast. Also the
+    // one light that casts a shadow, onto the ground plane below.
     const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
     keyLight.position.set(3, 4, 5);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(1024, 1024);
+    keyLight.shadow.bias = -0.0015;
+    keyLight.shadow.camera.near = 0.5;
+    keyLight.shadow.camera.far = 20;
+    keyLight.shadow.camera.left = -6;
+    keyLight.shadow.camera.right = 6;
+    keyLight.shadow.camera.top = 6;
+    keyLight.shadow.camera.bottom = -6;
     scene.add(keyLight);
+    scene.add(keyLight.target);
+
+    // Invisible except where the model's shadow falls on it — lets the
+    // shadow read against whatever the page looks like behind the canvas
+    // (renderer alpha is on) instead of needing an actual visible floor.
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), new THREE.ShadowMaterial({ opacity: 0.28 }));
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
 
     // Fill: white, fairly strong — keeps shadows soft and open rather
     // than letting the key light carve out hard contrast.
@@ -108,36 +124,70 @@ function BackgroundModel() {
 
     let disposed = false;
     let rafId = null;
-    let group = null;
-    // Use the current route's target, not DEFAULT_TARGET — the effect
-    // above (declared earlier, so it runs first) has already set
-    // targetRef to match location by the time this runs. Using
-    // DEFAULT_TARGET unconditionally here meant a direct load of
-    // /approach or /contact spawned the model at Home's spot first and
-    // only then animated to the right one.
-    const currentPos = targetToWorld(camera, targetRef.current);
-    let currentScale = targetRef.current.scale;
+    let mixer = null;
+    // Camera pose, lerped toward targetRef.current each frame (position
+    // and look-at target both ease independently, exponential decay).
+    const currentPosition = new THREE.Vector3(
+      targetRef.current.position.x,
+      targetRef.current.position.y,
+      targetRef.current.position.z
+    );
+    const currentLookAt = new THREE.Vector3(
+      targetRef.current.lookAt?.x ?? 0,
+      targetRef.current.lookAt?.y ?? 0,
+      targetRef.current.lookAt?.z ?? 0
+    );
+
+    // Some exports (e.g. Blender's glTF exporter with mesh compression
+    // enabled) mark KHR_draco_mesh_compression as required — without a
+    // DRACOLoader registered, GLTFLoader refuses to load the file at all
+    // and fails silently unless an onError callback is given.
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath(`${import.meta.env.BASE_URL}draco/`);
 
     const loader = new GLTFLoader();
+    loader.setDRACOLoader(dracoLoader);
     loader.setMeshoptDecoder(MeshoptDecoder);
-    loader.load(modelUrl, (gltf) => {
-      if (disposed) return;
-      group = gltf.scene;
-      group.traverse((child) => {
-        if (child.isMesh) {
-          child.material = new THREE.MeshStandardMaterial({
-            vertexColors: true,
-            roughness: 0.55,
-            metalness: 0.03,
-            emissive: new THREE.Color(0x000000),
-            emissiveIntensity: 0,
-          });
+    loader.load(
+      modelUrl,
+      (gltf) => {
+        if (disposed) return;
+        const group = gltf.scene;
+        group.traverse((child) => {
+          if (!child.isMesh) return;
+          child.castShadow = true;
+          // Only the earlier vertex-color sculpt export needs the flat
+          // clay material below. Textured exports (baseColorTexture etc.)
+          // keep whatever material the glTF actually defines.
+          const hasVertexColors = !!child.geometry.getAttribute('color');
+          if (hasVertexColors) {
+            child.material = new THREE.MeshStandardMaterial({
+              vertexColors: true,
+              roughness: 0,
+              metalness: 0,
+              emissive: new THREE.Color(0x000000),
+              emissiveIntensity: 0,
+            });
+          }
+        });
+
+        const { groundY } = recenterAndScale(group);
+        ground.position.set(0, groundY, 0);
+        keyLight.target.position.set(0, 0, 0);
+        scene.add(group);
+
+        // Play whatever clips came baked into the file (e.g. LittlestTokyo
+        // ships one looping animation of the scene's own moving parts).
+        if (gltf.animations.length > 0) {
+          mixer = new THREE.AnimationMixer(group);
+          gltf.animations.forEach((clip) => mixer.clipAction(clip).play());
         }
-      });
-      group.position.copy(currentPos);
-      group.scale.setScalar(currentScale);
-      scene.add(group);
-    });
+      },
+      undefined,
+      (error) => {
+        console.error('BackgroundModel: failed to load background model', error);
+      }
+    );
 
     const clock = new THREE.Clock();
 
@@ -145,30 +195,20 @@ function BackgroundModel() {
       rafId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
 
-      if (group) {
-        const facingCamera = targetRef.current.spin === false;
+      if (mixer && !reduceMotion) mixer.update(delta);
 
-        if (!reduceMotion) {
-          if (facingCamera) {
-            // Ease down to a stop facing the camera (rotation 0) rather
-            // than snapping — decays fast when there's a lot of spin
-            // still built up, and settles cleanly once close to 0.
-            const rotLerp = 1 - Math.pow(0.001, delta);
-            group.rotation.y += (0 - group.rotation.y) * rotLerp;
-            group.rotation.x += (0 - group.rotation.x) * rotLerp;
-          } else {
-            group.rotation.y += delta * 0.3;
-            group.rotation.x = Math.sin(clock.elapsedTime * 0.15) * 0.08;
-          }
-        }
+      // Exponential-decay smoothing: this constant is the fraction of the
+      // remaining distance closed per second — closer to 0 snaps almost
+      // instantly, closer to 1 eases much more slowly. 0.0008 settled in
+      // well under a second; 0.05 takes a couple of seconds to catch up.
+      const lerpFactor = reduceMotion ? 1 : 1 - Math.pow(0.05, delta);
+      const targetPosition = targetRef.current.position;
+      const targetLookAt = targetRef.current.lookAt ?? { x: 0, y: 0, z: 0 };
+      currentPosition.lerp(new THREE.Vector3(targetPosition.x, targetPosition.y, targetPosition.z), lerpFactor);
+      currentLookAt.lerp(new THREE.Vector3(targetLookAt.x, targetLookAt.y, targetLookAt.z), lerpFactor);
 
-        const targetPos = targetToWorld(camera, targetRef.current);
-        const lerpFactor = reduceMotion ? 1 : 1 - Math.pow(0.0008, delta);
-        currentPos.lerp(targetPos, lerpFactor);
-        currentScale += (targetRef.current.scale - currentScale) * lerpFactor;
-        group.position.copy(currentPos);
-        group.scale.setScalar(currentScale);
-      }
+      camera.position.copy(currentPosition);
+      camera.lookAt(currentLookAt);
 
       renderer.render(scene, camera);
     };
@@ -193,6 +233,8 @@ function BackgroundModel() {
         }
       });
       renderer.dispose();
+      dracoLoader.dispose();
+      mixer?.stopAllAction();
     };
   }, []);
 

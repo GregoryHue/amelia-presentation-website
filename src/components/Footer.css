@@ -5,7 +5,7 @@
      auto sibling regardless of source order, which would let the model
      render over the footer's links. */
   position: relative;
-  background: var(--bg);
+  /* background: var(--bg); */
   padding: 28px 0;
 }
 
