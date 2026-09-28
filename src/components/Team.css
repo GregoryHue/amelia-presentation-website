@@ -23,6 +23,7 @@
 }
 
 .team__subtitle {
+  font-family: 'Lora', serif;
   font-size: 1rem;
   color: var(--text-muted);
   margin: 12px 0 0;

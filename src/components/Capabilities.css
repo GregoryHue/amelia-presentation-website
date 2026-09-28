@@ -21,6 +21,7 @@
 }
 
 .capabilities__list {
+  font-family: 'Lora', serif;
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;

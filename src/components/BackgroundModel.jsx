@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
-import modelUrl from '../assets/LittlestTokyo.glb?url';
+import modelUrl from '../assets/amelia.glb?url';
 import { MIN_VIEWPORT_WIDTH } from '../backgroundModelConfig';
 import { markModelLoaded } from '../splashState';
 import './BackgroundModel.css';
@@ -16,7 +16,7 @@ import './BackgroundModel.css';
 // lookAt defaults to the model's center (0,0,0) if omitted.
 const CAMERA_POSES = {
   '/': { position: { x: 4, y: 1, z: 3 }, lookAt: { x: 0, y: -0.5, z: 0 } },
-  '/approach': { position: { x: -3, y: -0.5, z: 1.5 }, lookAt: { x: 3, y: 0, z: -3 } },
+  '/approach': { position: { x: -3, y: -0.5, z: 3 }, lookAt: { x: 3, y: 0, z: -3 } },
   '/team': { position: { x: -4.17, y: 1.36, z: 3.31 }, lookAt: { x: 0, y: 0, z: 0 } },
   '/demo': { position: { x: 2.52, y: 2.88, z: 4.62 }, lookAt: { x: 0, y: 0, z: 0 } },
   '/contact': { position: { x: 0.2, y: 0.48, z: 3.97 }, lookAt: { x: 0, y: 0, z: 0 } },
@@ -75,11 +75,13 @@ function BackgroundModel() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+    // Sized off the canvas's own box (see BackgroundModel.css — it's
+    // pinned to a corner, not the full viewport), not the window.
+    const camera = new THREE.PerspectiveCamera(40, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
     // Filmic tone mapping gives highlights a softer, more natural falloff
@@ -225,17 +227,21 @@ function BackgroundModel() {
     };
     animate();
 
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+    // Tracks the canvas's own box, not the window — it still fires on
+    // window resizes (the box is sized in vw/vh), but also covers the box
+    // itself ever changing size for any other reason.
+    const resizeObserver = new ResizeObserver(() => {
+      if (canvas.clientWidth === 0 || canvas.clientHeight === 0) return;
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener('resize', handleResize);
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+    });
+    resizeObserver.observe(canvas);
 
     return () => {
       disposed = true;
       cancelAnimationFrame(rafId);
-      window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       scene.traverse((obj) => {
         if (obj.geometry) obj.geometry.dispose();
         if (obj.material) {

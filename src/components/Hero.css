@@ -60,6 +60,7 @@
 }
 
 .hero__right {
+  font-family: 'Lora', serif;
   display: flex;
   flex-direction: column;
   gap: 20px;

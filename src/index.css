@@ -12,6 +12,14 @@
   color-scheme: dark;
 }
 
+::-moz-selection { /* Code for Firefox */
+  background: var(--accent);
+}
+
+::selection {
+  background: var(--accent);
+}
+
 * {
   box-sizing: border-box;
 }

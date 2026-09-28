@@ -31,6 +31,7 @@
 }
 
 .closing__subtitle {
+  font-family: 'Lora', serif;
   color: var(--text-muted);
   font-size: 1.02rem;
   margin: 0 0 24px;

@@ -69,6 +69,7 @@
 }
 
 .animated-testimonials__quote {
+  font-family: 'Lora', serif;
   margin: 32px 0 0;
   font-size: 1.05rem;
   line-height: 1.7;
