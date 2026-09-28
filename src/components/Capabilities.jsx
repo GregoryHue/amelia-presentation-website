@@ -6,19 +6,19 @@ import './Capabilities.css';
 
 const ITEMS = [
   {
-    n: '01',
-    title: 'Understand',
-    body: 'Placeholder — how Amelia takes in context, data, or intent from the user.',
+    n: 'Genomics',
+    title: 'Bioinformatics, end to end',
+    body: 'Amelia ingests raw sequencing output and runs dedicated pipelines based on your research needs. All-in-one.',
   },
   {
-    n: '02',
-    title: 'Act',
-    body: 'Placeholder — what Amelia actually does with that understanding.',
+    n: 'Literature',
+    title: 'Evidence synthesis on demand',
+    body: 'She reads the papers you don\'t have time for — screening thousands of abstracts, extracting findings, and citing the exact passages behind every claim.',
   },
   {
-    n: '03',
-    title: 'Learn',
-    body: 'Placeholder — how the product improves from the feedback loop.',
+    n: 'Lab workflows',
+    title: 'Protocols that keep themselves',
+    body: 'Amelia drafts protocols, tracks runs across instruments, and catches deviations early — so experiments stay reproducible without manual bookkeeping.',
   },
 ];
 

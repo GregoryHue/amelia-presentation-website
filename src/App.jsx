@@ -5,7 +5,9 @@ import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 import IdlePageCycler from './components/IdlePageCycler';
 import AuroraBackground from './components/AuroraBackground';
+import IntroSplash from './components/IntroSplash';
 import { MIN_VIEWPORT_WIDTH } from './backgroundModelConfig';
+import { markModelLoaded } from './splashState';
 
 // Code-split: three.js is a heavy dependency that only earns its keep on
 // viewports wide enough to actually show the model (see BackgroundModel.css).
@@ -20,8 +22,17 @@ function App() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  useEffect(() => {
+    // Below the width threshold, BackgroundModel never even mounts (see
+    // below), so nothing will ever call markModelLoaded() for it — tell
+    // the splash there's nothing to wait for, or it'd sit until its
+    // fallback timeout every time on a narrow viewport.
+    if (!showModel) markModelLoaded();
+  }, [showModel]);
+
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <IntroSplash />
       <IdlePageCycler />
       <AuroraBackground />
       {showModel && (

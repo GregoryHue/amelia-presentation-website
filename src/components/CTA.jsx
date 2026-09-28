@@ -27,7 +27,7 @@ function CTA() {
             fromFontVariationSettings="'wght' 400"
             toFontVariationSettings="'wght' 800"
           >
-            Ready to see it in action?
+            Put amelia on your problem
           </BreathingText>
           <TextCursorProximity
             as="p"
@@ -37,11 +37,11 @@ function CTA() {
             radius={70}
             falloff="gaussian"
           >
-            Placeholder closing pitch — one line encouraging the visitor to take the next step.
+            Tell us about your business, your data, and the question you're stuck on. The COFEE team replies, espresso.
           </TextCursorProximity>
-          <Link to="/" className="bracket-link closing__cta">
-            Get started
-          </Link>
+          <a href="mailto:info@cofeebiotech.com?subject=Amelia%20pilot%20inquiry" className="bracket-link closing__cta">
+            Email the team
+          </a>
         </div>
       </div>
     </section>

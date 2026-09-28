@@ -6,6 +6,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import modelUrl from '../assets/LittlestTokyo.glb?url';
 import { MIN_VIEWPORT_WIDTH } from '../backgroundModelConfig';
+import { markModelLoaded } from '../splashState';
 import './BackgroundModel.css';
 
 // The model itself never moves — it's recentered on load (see
@@ -64,7 +65,12 @@ function BackgroundModel() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || window.innerWidth < MIN_VIEWPORT_WIDTH) return undefined;
+    if (!canvas || window.innerWidth < MIN_VIEWPORT_WIDTH) {
+      // Nothing for the splash screen to wait on — let it know there's no
+      // model coming so it doesn't hang until its fallback timeout.
+      markModelLoaded();
+      return undefined;
+    }
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -182,10 +188,15 @@ function BackgroundModel() {
           mixer = new THREE.AnimationMixer(group);
           gltf.animations.forEach((clip) => mixer.clipAction(clip).play());
         }
+
+        markModelLoaded();
       },
       undefined,
       (error) => {
         console.error('BackgroundModel: failed to load background model', error);
+        // Loading failed — still tell the splash there's nothing more to
+        // wait for, so it falls back to its minimum-duration dismiss.
+        markModelLoaded();
       }
     );
 
