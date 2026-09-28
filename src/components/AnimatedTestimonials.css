@@ -9,7 +9,12 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 48px;
-  align-items: center;
+  /* stretch (the default) rather than center: makes .animated-testimonials__content
+     match the media column's height, so its own justify-content: space-between
+     can pin the controls to the bottom consistently — otherwise the content
+     column only takes up as much height as the current quote needs, and the
+     controls shift up/down with it as quotes change length. */
+  align-items: stretch;
 }
 
 @media (min-width: 720px) {
@@ -76,6 +81,7 @@
 
 .animated-testimonials__controls {
   display: flex;
+  justify-content: center;
   gap: 16px;
   padding-top: 48px;
 }
