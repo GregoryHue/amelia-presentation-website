@@ -83,18 +83,18 @@ function BackgroundModel() {
     // Filmic tone mapping gives highlights a softer, more natural falloff
     // than the flat default.
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    // Lower exposure — a dark, moody read rather than a bright studio shot.
+    renderer.toneMappingExposure = 0.5;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
 
-    // Dimmer, neutral-white studio lighting — keeps the model's dark clay
-    // vertex-color tone rather than lifting it toward grey/white.
     // scene.add(new THREE.AmbientLight(0xffffff, 1.1));
 
-    // Key: pure white, no warmth — a plainly "white light" cast. Also the
-    // one light that casts a shadow, onto the ground plane below.
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
+    // Key: the site's accent red, cast from the front — the dominant
+    // light source, so the model reads dark with a red glow rather than
+    // neutral white. Also the one light that casts a shadow.
+    const keyLight = new THREE.DirectionalLight(0xda5e57, 1.6);
     keyLight.position.set(3, 4, 5);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.set(1024, 1024);
@@ -117,15 +117,15 @@ function BackgroundModel() {
     scene.add(ground);
     let groundOffsetY = 0;
 
-    // Fill: white, fairly strong — keeps shadows soft and open rather
-    // than letting the key light carve out hard contrast.
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    // Fill: kept dim and neutral — just enough to keep the shadow side
+    // from going fully into black, without competing with the red key.
+    const fillLight = new THREE.DirectionalLight(0xffffff, 0.12);
     fillLight.position.set(-3, 1, 3);
     scene.add(fillLight);
 
-    // Rim: white as well now (was the saturated accent red), just enough
-    // to separate the silhouette from the background without tinting it.
-    const rimLight = new THREE.DirectionalLight(0xffffff, 0.35);
+    // Rim: a cooler, dim edge light so the silhouette still separates
+    // from the background instead of the whole model melting into it.
+    const rimLight = new THREE.DirectionalLight(0xffffff, 0.15);
     rimLight.position.set(-4, 2.5, -4);
     scene.add(rimLight);
     const dracoLoader = new DRACOLoader();
@@ -150,14 +150,20 @@ function BackgroundModel() {
       if (disposed) return;
       group = gltf.scene;
       group.traverse((child) => {
-        if (child.isMesh) {
-          child.castShadow = true;
+        if (!child.isMesh) return;
+        child.castShadow = true;
+        // Forcing a vertexColors material onto every mesh made sense for
+        // the old sculpt export (its color was baked per-vertex, no
+        // material of its own worth keeping) — but this glb is a textured
+        // export instead (baseColorTexture etc., no COLOR_0 attribute at
+        // all), and reading vertex colors that don't exist renders solid
+        // black. Only override meshes that actually have vertex colors;
+        // leave textured ones with whatever material the glTF defines.
+        const hasVertexColors = !!child.geometry.getAttribute('color');
+        if (hasVertexColors) {
           child.material = new THREE.MeshStandardMaterial({
             vertexColors: true,
             roughness: 0.85,
-            // Fully non-metallic — even the small residual metalness this
-            // had before was enough to tint the specular highlights a
-            // dark, gunmetal-ish color instead of a plain matte surface.
             metalness: 0,
             emissive: new THREE.Color(0x000000),
             emissiveIntensity: 0,
