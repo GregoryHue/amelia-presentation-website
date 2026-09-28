@@ -8,7 +8,7 @@ const ITEMS = [
   {
     n: 'Genomics',
     title: 'Bioinformatics, end to end',
-    body: 'Amelia ingests raw sequencing output and runs dedicated pipelines based on your research needs. All-in-one.',
+    body: 'amelia ingests raw sequencing output and runs dedicated pipelines based on your research needs. All-in-one.',
   },
   {
     n: 'Literature',
@@ -18,7 +18,7 @@ const ITEMS = [
   {
     n: 'Lab workflows',
     title: 'Protocols that keep themselves',
-    body: 'Amelia drafts protocols, tracks runs across instruments, and catches deviations early — so experiments stay reproducible without manual bookkeeping.',
+    body: 'amelia drafts protocols, tracks runs across instruments, and catches deviations early — so experiments stay reproducible without manual bookkeeping.',
   },
 ];
 

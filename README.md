@@ -1,4 +1,4 @@
-# Amelia — Presentation Website
+# amelia — Presentation Website
 
 A React + Vite showcase site for an AI product, styled after a bold
 propaganda-poster aesthetic: deep red, navy, and cream, with halftone

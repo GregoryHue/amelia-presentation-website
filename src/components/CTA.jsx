@@ -39,7 +39,7 @@ function CTA() {
           >
             Tell us about your business, your data, and the question you're stuck on. The COFEE team replies, espresso.
           </TextCursorProximity>
-          <a href="mailto:info@cofeebiotech.com?subject=Amelia%20pilot%20inquiry" className="bracket-link closing__cta">
+          <a href="mailto:info@cofeebiotech.com?subject=amelia%20pilot%20inquiry" className="bracket-link closing__cta">
             Email the team
           </a>
         </div>

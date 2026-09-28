@@ -5,7 +5,7 @@ import './Demo.css';
 
 const INITIAL_MESSAGE = {
   role: 'assistant',
-  text: "Hi, I'm Amelia. Ask me anything — this is a placeholder interface, so my replies are canned rather than real.",
+  text: "Hi, I'm amelia. Ask me anything — this is a placeholder interface, so my replies are canned rather than real.",
 };
 
 const SUGGESTED_PROMPTS = [
@@ -18,9 +18,9 @@ const SUGGESTED_PROMPTS = [
 // replies so the interaction loop (send → "thinking" → reply) has
 // something to demo. Swap this out once there's a real API to call.
 const CANNED_REPLIES = [
-  "Placeholder response — this is where Amelia's real answer would appear.",
+  "Placeholder response — this is where amelia's real answer would appear.",
   "This demo doesn't call a real model yet, but imagine a sharp, useful answer landing here.",
-  'Placeholder — Amelia would reason over your request and reply right here.',
+  'Placeholder — amelia would reason over your request and reply right here.',
 ];
 
 const THINKING_DELAY = 900;
@@ -65,7 +65,7 @@ function Demo() {
     <section id="demo" className="demo section-pad">
       <div className="container">
         <div ref={headRef} className={`demo__head reveal ${headVisible ? 'reveal--visible' : ''}`}>
-          <h2 className="demo__title">Talk to Amelia</h2>
+          <h2 className="demo__title">Talk to amelia</h2>
         </div>
 
         <div className="demo__panel">
@@ -86,7 +86,7 @@ function Demo() {
                 <span className="demo__avatar" aria-hidden="true">
                   <GlassesLogo />
                 </span>
-                <p className="demo__bubble demo__bubble--thinking" aria-label="Amelia is typing">
+                <p className="demo__bubble demo__bubble--thinking" aria-label="amelia is typing">
                   <span className="demo__dot" />
                   <span className="demo__dot" />
                   <span className="demo__dot" />
@@ -115,8 +115,8 @@ function Demo() {
             <input
               type="text"
               className="demo__input"
-              placeholder="Message Amelia…"
-              aria-label="Message Amelia"
+              placeholder="Message amelia…"
+              aria-label="Message amelia"
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
               disabled={thinking}

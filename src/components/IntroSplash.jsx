@@ -7,11 +7,11 @@ import './IntroSplash.css';
 // doesn't just flash past when the model loads instantly from cache — long
 // enough for the text fade-ins below (subtitle finishes around 1.7s) to
 // actually be seen.
-const MIN_DISPLAY_DURATION = 1800;
+const MIN_DISPLAY_DURATION = 1400;
 // Upper bound in case loading hangs or something goes wrong — the splash
 // dismisses itself either way once this fires, rather than blocking the
 // site indefinitely.
-const MAX_DISPLAY_DURATION = 6000;
+const MAX_DISPLAY_DURATION = 3000;
 
 function IntroSplash() {
   const [visible, setVisible] = useState(shouldShowSplash);
@@ -57,7 +57,7 @@ function IntroSplash() {
       aria-label="Skip intro animation"
     >
       <AuroraBackground inline as="span" />
-      <span className="intro-splash__text">Amelia</span>
+      <span className="intro-splash__text">amelia</span>
       <span className="intro-splash__subtitle">
         Placeholder — intelligence, reissued for the way you actually work.
       </span>

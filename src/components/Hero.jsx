@@ -47,7 +47,7 @@ function Hero() {
             radius={80}
             falloff="gaussian"
           >
-            Amelia is an agentic AI optimised for research and product design in the biotech industry. Give her a research question, upload your data and she plans the work, runs the analyses, and reports back with evidence you can check.
+            amelia is an agentic AI optimised for research and product design in the biotech industry. Give her a research question, upload your data and she plans the work, runs the analyses, and reports back with evidence you can check.
           </TextCursorProximity>
           <Link to="/approach" className="bracket-link hero__cta">
             See how it works

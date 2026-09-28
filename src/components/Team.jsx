@@ -11,7 +11,7 @@ const MEMBERS = [
     name: 'Placeholder Name',
     designation: 'Founder & CEO',
     quote:
-      "Placeholder quote — a line about why they started Amelia and what problem they're obsessed with solving.",
+      "Placeholder quote — a line about why they started amelia and what problem they're obsessed with solving.",
     src: placeholderAvatar('AR', '#da5e57'),
   },
   {
@@ -25,7 +25,7 @@ const MEMBERS = [
     name: 'Placeholder Name',
     designation: 'Lead Engineer',
     quote:
-      'Placeholder quote — a line about the technical challenge they find most interesting about Amelia.',
+      'Placeholder quote — a line about the technical challenge they find most interesting about amelia.',
     src: placeholderAvatar('MK', '#5eda8f'),
   },
   {
@@ -61,7 +61,7 @@ function Team() {
             radius={70}
             falloff="gaussian"
           >
-            Placeholder copy — a short line introducing the people behind Amelia.
+            Placeholder copy — a short line introducing the people behind amelia.
           </TextCursorProximity>
         </div>
 

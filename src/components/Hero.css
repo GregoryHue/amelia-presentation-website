@@ -6,8 +6,8 @@
 @media (min-width: 720px) {
   .hero {
     padding: 200px 0 120px;
-    display: flex;
-    align-items: center;
+    /* display: flex;
+    align-items: center; */
   }
 }
 
@@ -82,6 +82,7 @@
 }
 
 .hero__caption {
+  font-family: var(--font-body);
   font-size: 0.9rem;
   color: var(--text-muted);
   font-style: italic;
