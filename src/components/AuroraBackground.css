@@ -27,19 +27,19 @@
 .aurora-background__glow {
   --aurora-dark-gradient: repeating-linear-gradient(
     100deg,
-    #000 0%,
-    #000 7%,
+    var(--aurora-base) 0%,
+    var(--aurora-base) 7%,
     transparent 10%,
     transparent 12%,
-    #000 16%
+    var(--aurora-base) 16%
   );
   --aurora-gradient: repeating-linear-gradient(
     100deg,
-    #d4a13f 10%,
-    #f2d17a 15%,
-    #e8b84f 20%,
-    #fbe8b0 25%,
-    #dac857 30%
+    var(--aurora-1) 10%,
+    var(--aurora-2) 15%,
+    var(--aurora-3) 20%,
+    var(--aurora-4) 25%,
+    var(--aurora-5) 30%
   );
 
   position: absolute;
@@ -47,7 +47,7 @@
   background-image: var(--aurora-dark-gradient), var(--aurora-gradient);
   background-size: 300%, 200%;
   background-position: 50% 50%, 50% 50%;
-  opacity: 0.175;
+  opacity: var(--aurora-opacity);
   filter: blur(10px);
   will-change: transform;
 }
@@ -59,7 +59,7 @@
   background-image: var(--aurora-dark-gradient), var(--aurora-gradient);
   background-size: 200%, 100%;
   background-attachment: fixed;
-  mix-blend-mode: difference;
+  mix-blend-mode: var(--aurora-blend);
   animation: aurora 60s linear infinite;
 }
 

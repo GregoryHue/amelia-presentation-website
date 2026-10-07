@@ -1,23 +1,208 @@
+/* September Script by Font Bundles (1001fonts.com), Premium License:
+   web use allowed up to 100k page views/month; the license forbids
+   converting it to other formats, so it's served as the original TTF. */
+
+
+/* Theme tokens are registered as typed properties so the browser can
+   interpolate them: switching data-theme then fades every color (and
+   everything built from them, like the aurora gradients) instead of
+   snapping. --aurora-blend and color-scheme can't interpolate and still
+   switch instantly. */
+@property --bg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --bg-raised {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --text {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --text-muted {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --accent-contrast {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --green {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --blue {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --gold {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --cord {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --cord-knob {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+
+@property --line {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --aurora-base {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --aurora-1 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --aurora-2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --aurora-3 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --aurora-4 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --aurora-5 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+@property --aurora-opacity {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
 :root {
+  /* Palette from src/assets/moodboard.png: paper, ink, brick red,
+     botanical green, vintage blue, golden yellow. */
+  --bg: #f1ebdd;
+  --bg-raised: #e8e0cd;
+  --text: #252820;
+  --text-muted: #6b6a5c;
+  --accent: #9a4938;
+  --accent-contrast: #f1ebdd;
+  --green: #34483a;
+  --blue: #526e72;
+  --gold: #c9a85d;
+  --line: rgba(37, 40, 32, 0.16);
+  --cord: #252820;
+  --cord-knob: #9a4938;
+
+  /* On paper the stripe base must be light (a black base under multiply
+     just greys everything out), and the glow needs a much higher opacity
+     than dark's 0.175 to read at all. */
+  --aurora-base: #f1ebdd;
+  --aurora-1: #d4a13f;
+  --aurora-2: #f2d17a;
+  --aurora-3: #e8b84f;
+  --aurora-4: #fbe8b0;
+  --aurora-5: #dac857;
+  --aurora-blend: multiply;
+  --aurora-opacity: 0.6;
+  
+  --font-display: 'Saira', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-script: "Kaushan Script", cursive;
+
+  --theme-fade: 1s;
+
+  color-scheme: light;
+
+  transition-property: --bg, --bg-raised, --text, --text-muted, --accent, --accent-contrast, --green, --blue, --gold, --line, --cord, --cord-knob, --aurora-base, --aurora-1, --aurora-2, --aurora-3, --aurora-4, --aurora-5, --aurora-opacity;
+  transition-duration: var(--theme-fade);
+  transition-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    transition: none;
+  }
+}
+
+/* The original dark theme. Selected via <html data-theme="dark">, which
+   src/themeState.js manages (system preference, or the navbar toggle). */
+:root[data-theme='dark'] {
   --bg: #18181b;
   --bg-raised: #1f1f23;
   --text: #f4f4f5;
   --text-muted: #a1a1aa;
   --accent: #da5e57;
+  --accent-contrast: #18181b;
   --line: rgba(244, 244, 245, 0.14);
+  --cord: #e4e4e7;
+  --cord-knob: #fbe8b0;
 
-  --font-display: 'Saira', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --aurora-base: #000;
+  --aurora-1: #d4a13f;
+  --aurora-2: #f2d17a;
+  --aurora-3: #e8b84f;
+  --aurora-4: #fbe8b0;
+  --aurora-5: #dac857;
+  --aurora-blend: difference;
+  --aurora-opacity: 0.175;
 
   color-scheme: dark;
 }
 
 ::-moz-selection { /* Code for Firefox */
   background: var(--accent);
+  color: var(--accent-contrast);
 }
 
 ::selection {
   background: var(--accent);
+  color: var(--accent-contrast);
 }
 
 * {

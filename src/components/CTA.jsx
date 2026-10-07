@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import { useReveal } from '../hooks/useReveal';
 import BreathingText from './BreathingText';
 import TextCursorProximity from './TextCursorProximity';
-import { PROXIMITY_STYLES } from '../lib/proximityStyles';
+import { useProximityStyles } from '../lib/proximityStyles';
 import './CTA.css';
 
 function CTA() {
+  const proximityStyles = useProximityStyles();
   const [ref, visible] = useReveal();
   const containerRef = useRef(null);
 
@@ -27,13 +28,13 @@ function CTA() {
             fromFontVariationSettings="'wght' 400"
             toFontVariationSettings="'wght' 800"
           >
-            Put amelia on your problem
+            Put Amelia on your problem
           </BreathingText>
           <TextCursorProximity
             as="p"
             className="closing__subtitle"
             containerRef={containerRef}
-            styles={PROXIMITY_STYLES}
+            styles={proximityStyles}
             radius={70}
             falloff="gaussian"
           >

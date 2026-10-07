@@ -93,7 +93,7 @@
 
 .demo__message--user .demo__bubble {
   background: var(--accent);
-  color: #18181b;
+  color: var(--accent-contrast);
   border-bottom-left-radius: 4px;
 }
 
@@ -205,7 +205,7 @@
   border-radius: 10px;
   border: none;
   background: var(--accent);
-  color: #18181b;
+  color: var(--accent-contrast);
   cursor: pointer;
   transition: opacity 0.25s ease;
 }

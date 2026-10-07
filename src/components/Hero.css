@@ -36,11 +36,14 @@
 }
 
 .hero__title {
-  font-family: var(--font-display);
-  font-weight: 700;
+  font-family: var(--font-script);
+  /* The script face only ships a regular weight — anything bolder would
+     be browser-faked. */
+  font-weight: 400;
   font-size: clamp(3.2rem, 11vw, 6.5rem);
-  line-height: 0.95;
-  letter-spacing: 0.01em;
+  /* Extra room for the script's ascender and descender swashes. */
+  line-height: 1.15;
+  letter-spacing: 0;
   margin: 20px 0 8px;
   color: var(--text);
 }

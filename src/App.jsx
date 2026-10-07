@@ -6,6 +6,7 @@ import PageTransition from './components/PageTransition';
 import IdlePageCycler from './components/IdlePageCycler';
 import AuroraBackground from './components/AuroraBackground';
 import IntroSplash from './components/IntroSplash';
+import ThemeToggle from './components/ThemeToggle';
 import { MIN_VIEWPORT_WIDTH } from './backgroundModelConfig';
 import { markModelLoaded } from './splashState';
 
@@ -41,6 +42,7 @@ function App() {
         </Suspense>
       )}
       <Navbar />
+      <ThemeToggle />
       <main>
         <PageTransition />
       </main>

@@ -6,6 +6,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import modelUrl from '../assets/amelia.glb?url';
 import { MIN_VIEWPORT_WIDTH } from '../backgroundModelConfig';
+import { getTheme, subscribeTheme } from '../themeState';
 import './BackgroundModel.css';
 
 // Simple screen-space spot per route (x/y as fractions of the viewport,
@@ -29,6 +30,14 @@ const ROUTE_TARGETS = {
 };
 
 const DEFAULT_TARGET = ROUTE_TARGETS['/'];
+
+// Per-theme lighting: the key light takes the theme's accent red, and
+// exposure is raised on the light theme so the model doesn't read muddy
+// against the paper background (dark keeps the original moody read).
+const THEME_LIGHTING = {
+  light: { key: 0x9a4938, exposure: 0.8 },
+  dark: { key: 0xda5e57, exposure: 0.5 },
+};
 
 function getTarget(pathname) {
   return ROUTE_TARGETS[pathname] || DEFAULT_TARGET;
@@ -83,8 +92,6 @@ function BackgroundModel() {
     // Filmic tone mapping gives highlights a softer, more natural falloff
     // than the flat default.
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    // Lower exposure — a dark, moody read rather than a bright studio shot.
-    renderer.toneMappingExposure = 0.5;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
@@ -94,7 +101,7 @@ function BackgroundModel() {
     // Key: the site's accent red, cast from the front — the dominant
     // light source, so the model reads dark with a red glow rather than
     // neutral white. Also the one light that casts a shadow.
-    const keyLight = new THREE.DirectionalLight(0xda5e57, 1.6);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
     keyLight.position.set(3, 4, 5);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.set(1024, 1024);
@@ -107,6 +114,20 @@ function BackgroundModel() {
     keyLight.shadow.camera.bottom = -6;
     scene.add(keyLight);
     scene.add(keyLight.target);
+
+    // The animate loop eases the light toward these on a theme switch,
+    // matching the CSS color fade (--theme-fade in index.css).
+    const targetKeyColor = new THREE.Color();
+    let targetExposure = 0;
+    const applyTheme = () => {
+      const lighting = THEME_LIGHTING[getTheme()];
+      targetKeyColor.setHex(lighting.key);
+      targetExposure = lighting.exposure;
+    };
+    applyTheme();
+    keyLight.color.copy(targetKeyColor);
+    renderer.toneMappingExposure = targetExposure;
+    const unsubscribeTheme = subscribeTheme(applyTheme);
 
     // Invisible except where the model's shadow falls on it — lets the
     // shadow read against whatever the page looks like behind the canvas
@@ -182,6 +203,10 @@ function BackgroundModel() {
       rafId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
 
+      const themeLerp = reduceMotion ? 1 : 1 - Math.pow(0.01, delta);
+      keyLight.color.lerp(targetKeyColor, themeLerp);
+      renderer.toneMappingExposure += (targetExposure - renderer.toneMappingExposure) * themeLerp;
+
       if (group) {
         const facingCamera = targetRef.current.spin === false;
 
@@ -228,6 +253,7 @@ function BackgroundModel() {
       disposed = true;
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', handleResize);
+      unsubscribeTheme();
       scene.traverse((obj) => {
         if (obj.geometry) obj.geometry.dispose();
         if (obj.material) {

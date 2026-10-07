@@ -57,7 +57,7 @@ function IntroSplash() {
       aria-label="Skip intro animation"
     >
       <AuroraBackground inline as="span" />
-      <span className="intro-splash__text">amelia</span>
+      <span className="intro-splash__text">Amelia</span>
       <span className="intro-splash__subtitle">
         Placeholder — intelligence, reissued for the way you actually work.
       </span>

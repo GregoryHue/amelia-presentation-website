@@ -1,14 +1,14 @@
 import { useRef } from 'react';
 import { useReveal } from '../hooks/useReveal';
 import TextCursorProximity from './TextCursorProximity';
-import { PROXIMITY_STYLES } from '../lib/proximityStyles';
+import { useProximityStyles } from '../lib/proximityStyles';
 import './Capabilities.css';
 
 const ITEMS = [
   {
     n: 'Genomics',
     title: 'Bioinformatics, end to end',
-    body: 'amelia ingests raw sequencing output and runs dedicated pipelines based on your research needs. All-in-one.',
+    body: 'Amelia ingests raw sequencing output and runs dedicated pipelines based on your research needs. All-in-one.',
   },
   {
     n: 'Literature',
@@ -18,11 +18,12 @@ const ITEMS = [
   {
     n: 'Lab workflows',
     title: 'Protocols that keep themselves',
-    body: 'amelia drafts protocols, tracks runs across instruments, and catches deviations early — so experiments stay reproducible without manual bookkeeping.',
+    body: 'Amelia drafts protocols, tracks runs across instruments, and catches deviations early — so experiments stay reproducible without manual bookkeeping.',
   },
 ];
 
 function CapabilityItem({ item, index }) {
+  const proximityStyles = useProximityStyles();
   const [ref, visible] = useReveal();
   const containerRef = useRef(null);
 
@@ -39,7 +40,7 @@ function CapabilityItem({ item, index }) {
       <TextCursorProximity
         as="p"
         containerRef={containerRef}
-        styles={PROXIMITY_STYLES}
+        styles={proximityStyles}
         radius={70}
         falloff="gaussian"
       >
